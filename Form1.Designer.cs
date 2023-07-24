@@ -30,7 +30,6 @@
         {
             this.metroTile7 = new MetroFramework.Controls.MetroTile();
             this.metroTile5 = new MetroFramework.Controls.MetroTile();
-            this.metroTile6 = new MetroFramework.Controls.MetroTile();
             this.metroTile4 = new MetroFramework.Controls.MetroTile();
             this.metroTile3 = new MetroFramework.Controls.MetroTile();
             this.metroTile2 = new MetroFramework.Controls.MetroTile();
@@ -41,7 +40,7 @@
             // metroTile7
             // 
             this.metroTile7.ActiveControl = null;
-            this.metroTile7.Location = new System.Drawing.Point(484, 240);
+            this.metroTile7.Location = new System.Drawing.Point(522, 240);
             this.metroTile7.Margin = new System.Windows.Forms.Padding(2);
             this.metroTile7.Name = "metroTile7";
             this.metroTile7.Size = new System.Drawing.Size(175, 175);
@@ -59,7 +58,7 @@
             // metroTile5
             // 
             this.metroTile5.ActiveControl = null;
-            this.metroTile5.Location = new System.Drawing.Point(484, 62);
+            this.metroTile5.Location = new System.Drawing.Point(522, 62);
             this.metroTile5.Margin = new System.Windows.Forms.Padding(2);
             this.metroTile5.Name = "metroTile5";
             this.metroTile5.Size = new System.Drawing.Size(175, 175);
@@ -74,32 +73,13 @@
             this.metroTile5.UseTileImage = true;
             this.metroTile5.Click += new System.EventHandler(this.metroTile5_Click_1);
             // 
-            // metroTile6
-            // 
-            this.metroTile6.ActiveControl = null;
-            this.metroTile6.Location = new System.Drawing.Point(196, 62);
-            this.metroTile6.Margin = new System.Windows.Forms.Padding(2);
-            this.metroTile6.Name = "metroTile6";
-            this.metroTile6.Size = new System.Drawing.Size(284, 115);
-            this.metroTile6.Style = MetroFramework.MetroColorStyle.Purple;
-            this.metroTile6.TabIndex = 5;
-            this.metroTile6.Text = "Member Registration";
-            this.metroTile6.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.metroTile6.TileImage = global::MetroLibrary.Properties.Resources.coslanding_icon_signup1;
-            this.metroTile6.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroTile6.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
-            this.metroTile6.TileTextFontWeight = MetroFramework.MetroTileTextWeight.Bold;
-            this.metroTile6.UseSelectable = true;
-            this.metroTile6.UseTileImage = true;
-            this.metroTile6.Click += new System.EventHandler(this.metroTile6_Click);
-            // 
             // metroTile4
             // 
             this.metroTile4.ActiveControl = null;
-            this.metroTile4.Location = new System.Drawing.Point(196, 181);
+            this.metroTile4.Location = new System.Drawing.Point(17, 241);
             this.metroTile4.Margin = new System.Windows.Forms.Padding(2);
             this.metroTile4.Name = "metroTile4";
-            this.metroTile4.Size = new System.Drawing.Size(284, 115);
+            this.metroTile4.Size = new System.Drawing.Size(175, 172);
             this.metroTile4.Style = MetroFramework.MetroColorStyle.Teal;
             this.metroTile4.TabIndex = 3;
             this.metroTile4.Text = "Staff Login";
@@ -117,7 +97,7 @@
             this.metroTile3.Location = new System.Drawing.Point(196, 300);
             this.metroTile3.Margin = new System.Windows.Forms.Padding(2);
             this.metroTile3.Name = "metroTile3";
-            this.metroTile3.Size = new System.Drawing.Size(284, 115);
+            this.metroTile3.Size = new System.Drawing.Size(322, 115);
             this.metroTile3.Style = MetroFramework.MetroColorStyle.Orange;
             this.metroTile3.TabIndex = 2;
             this.metroTile3.Text = "Staff Details and Registration";
@@ -155,13 +135,13 @@
             // 
             this.metroTile1.ActiveControl = null;
             this.metroTile1.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.metroTile1.Location = new System.Drawing.Point(17, 240);
+            this.metroTile1.Location = new System.Drawing.Point(196, 62);
             this.metroTile1.Margin = new System.Windows.Forms.Padding(2);
             this.metroTile1.Name = "metroTile1";
-            this.metroTile1.Size = new System.Drawing.Size(175, 175);
+            this.metroTile1.Size = new System.Drawing.Size(322, 115);
             this.metroTile1.Style = MetroFramework.MetroColorStyle.Green;
             this.metroTile1.TabIndex = 0;
-            this.metroTile1.Text = "Member Details ";
+            this.metroTile1.Text = "Member Details and Registration";
             this.metroTile1.TileImage = global::MetroLibrary.Properties.Resources._644670__1_1;
             this.metroTile1.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroTile1.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
@@ -172,7 +152,7 @@
             // 
             // metroLabel1
             // 
-            this.metroLabel1.Location = new System.Drawing.Point(196, 37);
+            this.metroLabel1.Location = new System.Drawing.Point(234, 37);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(463, 23);
             this.metroLabel1.TabIndex = 8;
@@ -184,11 +164,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 431);
+            this.ClientSize = new System.Drawing.Size(714, 431);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.metroTile7);
             this.Controls.Add(this.metroTile5);
-            this.Controls.Add(this.metroTile6);
             this.Controls.Add(this.metroTile4);
             this.Controls.Add(this.metroTile3);
             this.Controls.Add(this.metroTile2);
@@ -211,7 +190,6 @@
         private MetroFramework.Controls.MetroTile metroTile2;
         private MetroFramework.Controls.MetroTile metroTile3;
         private MetroFramework.Controls.MetroTile metroTile4;
-        private MetroFramework.Controls.MetroTile metroTile6;
         private MetroFramework.Controls.MetroTile metroTile5;
         private MetroFramework.Controls.MetroTile metroTile7;
         private MetroFramework.Controls.MetroLabel metroLabel1;

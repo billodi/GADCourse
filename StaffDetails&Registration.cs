@@ -20,7 +20,7 @@ namespace MetroLibrary
             lblIDError.Visible = false;
             lblStaffTypeError.Visible = false;
             lblcpwdError.Visible = false;
-            
+
             try
             {
                 SQLiteDataReader r = DBIO.Search("SELECT max(id) FROM staff");
@@ -38,11 +38,12 @@ namespace MetroLibrary
 
         private void StaffDetails_Registration_Load(object sender, EventArgs e)
         {
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff"))
-            {
-                while (read.Read())
+            try {
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff"))
                 {
-                    metroGrid1.Rows.Add(new object[] {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
                         read.GetValue(0),
                         read.GetValue(1),
                         read.GetValue(2),
@@ -52,12 +53,27 @@ namespace MetroLibrary
                         read.GetValue(6),
                         read.GetValue(7)
                     });
+                    }
                 }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void StaffDetails_Registration_FormClosed(object sender, FormClosedEventArgs e)
         {
+
+            Program.whoami[0] = Program.whoamitemp[0];
+            Program.whoami[1] = Program.whoamitemp[1];
+            Program.whoami[2] = Program.whoamitemp[2];
+
+
             new Form1().Show();
         }
 
@@ -68,12 +84,15 @@ namespace MetroLibrary
 
         private void metroComboBox_stafftype_SelectedIndexChanged(object sender, EventArgs e)
         {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE stafftype LIKE '%" + metroComboBox_stafftype.Text + "%'"))
+            
+            try
             {
-                while (read.Read())
+                metroGrid1.Rows.Clear();
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE stafftype LIKE '%" + metroComboBox_stafftype.Text + "%'"))
                 {
-                    metroGrid1.Rows.Add(new object[] {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
                         read.GetValue(0),
                         read.GetValue(1),
                         read.GetValue(2),
@@ -83,7 +102,16 @@ namespace MetroLibrary
                         read.GetValue(6),
                         read.GetValue(7)
                     });
+                    }
                 }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -98,6 +126,27 @@ namespace MetroLibrary
             lblStaffTypeError.Visible = false;
             lblcpwdError.Visible = false;
             Boolean error = false;
+
+            // Check if the passwords match.
+            if (txt_pwd.Text != txt_cpwd.Text)
+            {
+                // Display an error message.
+                lblcpwdError.Text = "Passwords do not match.";
+                lblcpwdError.Visible = true;
+                txt_cpwd.Focus();
+                error = true;
+            }
+
+            // Check if the password meets the minimum requirements using regex.
+            Regex regex = new Regex(@"^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$");
+            if (!regex.IsMatch(txt_pwd.Text))
+            {
+                // Display an error message.
+                lblcpwdError.Text = "Password must be at least 8 characters\nlong and contain at least one uppercase\nletter, one lowercase letter,\none digit, and one special character.";
+                lblcpwdError.Visible = true;
+                txt_pwd.Focus();
+                error = true;
+            }
 
             // Validate the staff type.
 
@@ -169,28 +218,15 @@ namespace MetroLibrary
                 error = true;
             }
 
-            // Check if the passwords match.
-            if (txt_pwd.Text != txt_cpwd.Text)
+            if (DBIO.Search("SELECT nic FROM staff WHERE nic='" + txt_snic.Text + "'").Read())
             {
-                // Display an error message.
-                lblcpwdError.Text = "Passwords do not match.";
-                lblcpwdError.Visible = true;
-                txt_cpwd.Focus();
+                lblNICError.Text = "There cannot be Duplicate NIC.";
+                lblNICError.Visible = true;
+                txt_snic.Focus();
                 error = true;
             }
 
-            // Check if the password meets the minimum requirements using regex.
-            Regex regex = new Regex(@"^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$");
-            if (!regex.IsMatch(txt_pwd.Text))
-            {
-                // Display an error message.
-                lblcpwdError.Text = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.";
-                lblcpwdError.Visible = true;
-                txt_pwd.Focus();
-                error = true;
-            }
-
-            // All validation passed, so show a success message.
+            // All validation passed
             if (!error)
             {
                 DBIO.IUD("INSERT INTO staff('ID','nic','name','address','tp','email','stafftype','registered_date','password') VALUES('" + txt_sid.Text + "','" + txt_snic.Text + "','" + txt_sname.Text + "','" + txt_saddress.Text + "','" + txt_stp.Text + "','" + txt_semail.Text + "','" + metroComboBox_stafftype.Text + "','" + DateTime.Now.ToString("yyyy-MM-dd") + "','" + txt_pwd.Text + "')");
@@ -215,7 +251,7 @@ namespace MetroLibrary
                     });
                     }
                 }
-                
+
                 txt_cpwd.Text = "";
                 txt_pwd.Text = "";
                 txt_saddress.Text = "";
@@ -230,144 +266,11 @@ namespace MetroLibrary
 
         private void txt_snic_KeyUp(object sender, KeyEventArgs e)
         {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE nic LIKE '%" + txt_snic.Text + "%'"))
+            
+            try
             {
-                while (read.Read())
-                {
-                    metroGrid1.Rows.Add(new object[] {
-                        read.GetValue(0),
-                        read.GetValue(1),
-                        read.GetValue(2),
-                        read.GetValue(3),
-                        read.GetValue(4),
-                        read.GetValue(5),
-                        read.GetValue(6),
-                        read.GetValue(7)
-                    });
-                }
-            }
-        }
-
-        private void txt_sname_KeyUp(object sender, KeyEventArgs e)
-        {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE name LIKE '%" + txt_sname.Text + "%'"))
-            {
-                while (read.Read())
-                {
-                    metroGrid1.Rows.Add(new object[] {
-                        read.GetValue(0),
-                        read.GetValue(1),
-                        read.GetValue(2),
-                        read.GetValue(3),
-                        read.GetValue(4),
-                        read.GetValue(5),
-                        read.GetValue(6),
-                        read.GetValue(7)
-                    });
-                }
-            }
-        }
-
-        private void txt_saddress_KeyUp(object sender, KeyEventArgs e)
-        {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE address LIKE '%" + txt_saddress.Text + "%'"))
-            {
-                while (read.Read())
-                {
-                    metroGrid1.Rows.Add(new object[] {
-                        read.GetValue(0),
-                        read.GetValue(1),
-                        read.GetValue(2),
-                        read.GetValue(3),
-                        read.GetValue(4),
-                        read.GetValue(5),
-                        read.GetValue(6),
-                        read.GetValue(7)
-                    });
-                }
-            }
-        }
-
-        private void txt_sid_KeyUp(object sender, KeyEventArgs e)
-        {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE id LIKE '%" + txt_sid.Text + "%'"))
-            {
-                while (read.Read())
-                {
-                    metroGrid1.Rows.Add(new object[] {
-                        read.GetValue(0),
-                        read.GetValue(1),
-                        read.GetValue(2),
-                        read.GetValue(3),
-                        read.GetValue(4),
-                        read.GetValue(5),
-                        read.GetValue(6),
-                        read.GetValue(7)
-                    });
-                }
-            }
-        }
-
-        private void txt_stp_KeyUp(object sender, KeyEventArgs e)
-        {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE tp LIKE '%" + txt_stp.Text + "%'"))
-            {
-                while (read.Read())
-                {
-                    metroGrid1.Rows.Add(new object[] {
-                        read.GetValue(0),
-                        read.GetValue(1),
-                        read.GetValue(2),
-                        read.GetValue(3),
-                        read.GetValue(4),
-                        read.GetValue(5),
-                        read.GetValue(6),
-                        read.GetValue(7)
-                    });
-                }
-            }
-        }
-
-        private void txt_semail_KeyUp(object sender, KeyEventArgs e)
-        {
-            metroGrid1.Rows.Clear();
-            using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE email LIKE '%" + txt_semail.Text + "%'"))
-            {
-                while (read.Read())
-                {
-                    metroGrid1.Rows.Add(new object[] {
-                        read.GetValue(0),
-                        read.GetValue(1),
-                        read.GetValue(2),
-                        read.GetValue(3),
-                        read.GetValue(4),
-                        read.GetValue(5),
-                        read.GetValue(6),
-                        read.GetValue(7)
-                    });
-                }
-            }
-        }
-
-        private void btn_sclear_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine(metroGrid1.CurrentRow.Cells[0].Value.ToString());
-        }
-
-        private void btn_sdelete_Click(object sender, EventArgs e)
-        {
-
-            DialogResult dialogResult = MetroMessageBox.Show(this, "Are you sure you want to delete?", "Are You Sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-            if (dialogResult == DialogResult.Yes)
-            {
-                DBIO.IUD("DELETE FROM staff WHERE ID='" + metroGrid1.CurrentRow.Cells[0].Value.ToString() + "'");
                 metroGrid1.Rows.Clear();
-                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff"))
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE nic LIKE '%" + txt_snic.Text + "%'"))
                 {
                     while (read.Read())
                     {
@@ -384,6 +287,279 @@ namespace MetroLibrary
                     }
                 }
             }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_sname_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+            try
+            {
+                metroGrid1.Rows.Clear();
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE name LIKE '%" + txt_sname.Text + "%'"))
+                {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
+                        read.GetValue(0),
+                        read.GetValue(1),
+                        read.GetValue(2),
+                        read.GetValue(3),
+                        read.GetValue(4),
+                        read.GetValue(5),
+                        read.GetValue(6),
+                        read.GetValue(7)
+                    });
+                    }
+                }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_saddress_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+            try
+            {
+                metroGrid1.Rows.Clear();
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE address LIKE '%" + txt_saddress.Text + "%'"))
+                {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
+                        read.GetValue(0),
+                        read.GetValue(1),
+                        read.GetValue(2),
+                        read.GetValue(3),
+                        read.GetValue(4),
+                        read.GetValue(5),
+                        read.GetValue(6),
+                        read.GetValue(7)
+                    });
+                    }
+                }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_sid_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+            try
+            {
+                metroGrid1.Rows.Clear();
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE id LIKE '%" + txt_sid.Text + "%'"))
+                {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
+                        read.GetValue(0),
+                        read.GetValue(1),
+                        read.GetValue(2),
+                        read.GetValue(3),
+                        read.GetValue(4),
+                        read.GetValue(5),
+                        read.GetValue(6),
+                        read.GetValue(7)
+                    });
+                    }
+                }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_stp_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+            try
+            {
+                metroGrid1.Rows.Clear();
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE tp LIKE '%" + txt_stp.Text + "%'"))
+                {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
+                        read.GetValue(0),
+                        read.GetValue(1),
+                        read.GetValue(2),
+                        read.GetValue(3),
+                        read.GetValue(4),
+                        read.GetValue(5),
+                        read.GetValue(6),
+                        read.GetValue(7)
+                    });
+                    }
+                }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txt_semail_KeyUp(object sender, KeyEventArgs e)
+        {
+            
+            try
+            {
+                metroGrid1.Rows.Clear();
+                using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff WHERE email LIKE '%" + txt_semail.Text + "%'"))
+                {
+                    while (read.Read())
+                    {
+                        metroGrid1.Rows.Add(new object[] {
+                        read.GetValue(0),
+                        read.GetValue(1),
+                        read.GetValue(2),
+                        read.GetValue(3),
+                        read.GetValue(4),
+                        read.GetValue(5),
+                        read.GetValue(6),
+                        read.GetValue(7)
+                    });
+                    }
+                }
+            }
+            catch (System.Data.SQLite.SQLiteException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btn_sclear_Click(object sender, EventArgs e)
+        {
+            txt_cpwd.Text = "";
+            txt_pwd.Text = "";
+            txt_saddress.Text = "";
+            txt_semail.Text = "";
+            txt_sname.Text = "";
+            txt_snic.Text = "";
+            txt_stp.Text = "";
+            metroComboBox_stafftype.SelectedIndex = -1;
+        }
+
+        private void btn_sdelete_Click(object sender, EventArgs e)
+        {
+            if (Program.whoami[2] == "Librarian" || Program.whoami[2] == "ADMIN")
+            {
+                DialogResult dialogResult = MetroMessageBox.Show(this, "Are you sure you want to delete?", "Are You Sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    DBIO.IUD("DELETE FROM staff WHERE ID='" + metroGrid1.CurrentRow.Cells[0].Value.ToString() + "'");
+                    metroGrid1.Rows.Clear();
+                    using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff"))
+                    {
+                        while (read.Read())
+                        {
+                            metroGrid1.Rows.Add(new object[] {
+                        read.GetValue(0),
+                        read.GetValue(1),
+                        read.GetValue(2),
+                        read.GetValue(3),
+                        read.GetValue(4),
+                        read.GetValue(5),
+                        read.GetValue(6),
+                        read.GetValue(7)
+                    });
+                        }
+                    }
+                    Program.whoami[0] = Program.whoamitemp[0];
+                    Program.whoami[1] = Program.whoamitemp[1];
+                    Program.whoami[2] = Program.whoamitemp[2];
+                }
+            }
+            else
+            {
+                new StaffAuth().ShowDialog();
+            }
+        }
+
+        private void metroGrid1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            txt_saddress.Text = metroGrid1.CurrentRow.Cells[3].Value.ToString();
+            txt_semail.Text = metroGrid1.CurrentRow.Cells[5].Value.ToString();
+            txt_sid.Text = metroGrid1.CurrentRow.Cells[0].Value.ToString();
+            txt_sname.Text = metroGrid1.CurrentRow.Cells[2].Value.ToString();
+            txt_snic.Text = metroGrid1.CurrentRow.Cells[1].Value.ToString();
+            txt_stp.Text = metroGrid1.CurrentRow.Cells[4].Value.ToString();
+            metroComboBox_stafftype.Text = metroGrid1.CurrentRow.Cells[6].Value.ToString();
+        }
+
+        private void btn_supdate_Click(object sender, EventArgs e)
+        {
+            if (Program.whoami[2] == "Librarian" || Program.whoami[2] == "ADMIN")
+            {
+                if (String.IsNullOrEmpty(txt_sid.Text) || String.IsNullOrEmpty(txt_sname.Text) || String.IsNullOrEmpty(txt_snic.Text) || String.IsNullOrEmpty(txt_stp.Text) || String.IsNullOrEmpty(txt_saddress.Text) || String.IsNullOrEmpty(txt_semail.Text) || String.IsNullOrEmpty(metroComboBox_stafftype.Text))
+                {
+                    MetroMessageBox.Show(this, "Please Select a Staff Member Before you Update", "Select A Member", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    DBIO.IUD("UPDATE staff SET nic='" + txt_snic.Text + "',name='" + txt_sname.Text + "',address='" + txt_saddress.Text + "',tp='" + txt_stp.Text + "',email='" + txt_semail.Text + "',stafftype='" + metroComboBox_stafftype.Text + "' WHERE id='" + txt_sid.Text + "'");
+                    MetroMessageBox.Show(this, "Staff Member Updated Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    metroGrid1.Rows.Clear();
+                    using (SQLiteDataReader read = DBIO.Search("SELECT id,nic,name,address,tp,email,stafftype,registered_date FROM staff"))
+                    {
+                        while (read.Read())
+                        {
+                            metroGrid1.Rows.Add(new object[] {
+                                read.GetValue(0),
+                                read.GetValue(1),
+                                read.GetValue(2),
+                                read.GetValue(3),
+                                read.GetValue(4),
+                                read.GetValue(5),
+                                read.GetValue(6),
+                                read.GetValue(7)
+                            });
+                        }
+                    }
+                    Program.whoami[0] = Program.whoamitemp[0];
+                    Program.whoami[1] = Program.whoamitemp[1];
+                    Program.whoami[2] = Program.whoamitemp[2];
+                }
+            }
+            else
+            {
+                new StaffAuth().ShowDialog();
+            }
         }
     }
 }
+

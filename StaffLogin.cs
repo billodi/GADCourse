@@ -39,6 +39,9 @@ namespace MetroLibrary
                         Program.whoami[0] = r.GetString(0);
                         Program.whoami[1] = r.GetString(2);
                         Program.whoami[2] = r.GetString(3);
+                        Program.whoamitemp[0] = Program.whoami[0];
+                        Program.whoamitemp[1] = Program.whoami[1];
+                        Program.whoamitemp[2] = Program.whoami[2];
                         Console.WriteLine(Program.whoami[0]);
                         new Form1().Show();
                         this.Dispose();
@@ -139,7 +142,13 @@ namespace MetroLibrary
 
         private void metroLink1_Click(object sender, EventArgs e)
         {
-            new StaffDetails_Registration().Show();
+            this.Dispose();
+            new staffSignUp().Show();
+        }
+
+        private void btn_signup_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

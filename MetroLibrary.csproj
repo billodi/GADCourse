@@ -172,6 +172,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="staffSignUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="staffSignUp.Designer.cs">
+      <DependentUpon>staffSignUp.cs</DependentUpon>
+    </Compile>
     <Compile Include="HandOver.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,15 +190,15 @@
     <Compile Include="MemberDetails.Designer.cs">
       <DependentUpon>MemberDetails.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemberRegister.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MemberRegister.Designer.cs">
-      <DependentUpon>MemberRegister.cs</DependentUpon>
-    </Compile>
     <Compile Include="DBIO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaffAuth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StaffAuth.Designer.cs">
+      <DependentUpon>StaffAuth.cs</DependentUpon>
+    </Compile>
     <Compile Include="StaffDetails&amp;Registration.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -217,14 +223,14 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="staffSignUp.resx">
+      <DependentUpon>staffSignUp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HandOver.resx">
       <DependentUpon>HandOver.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MemberDetails.resx">
       <DependentUpon>MemberDetails.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MemberRegister.resx">
-      <DependentUpon>MemberRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -236,6 +242,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="StaffAuth.resx">
+      <DependentUpon>StaffAuth.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="StaffDetails&amp;Registration.resx">
       <DependentUpon>StaffDetails&amp;Registration.cs</DependentUpon>
     </EmbeddedResource>

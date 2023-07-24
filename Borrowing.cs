@@ -26,5 +26,10 @@ namespace MetroLibrary
         {
             new Form1().Show();
         }
+
+        private void btn_borrowsave_Click(object sender, EventArgs e)
+        {
+            DBIO.IUD("INSERT INTO borrowinghistory values("+txt_borrowid.Text+","+txt_borrowbid.Text+","+txt_memnic.Text+",'"+ DateTime.Now.ToString("yyyy-MM-dd") + "','"+ DateTime.Now.ToString("yyyy-MM-dd") + "','Y')");
+        }
     }
 }

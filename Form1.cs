@@ -23,43 +23,41 @@ namespace MetroLibrary
         {
             Hide();
             MemberDetails obj = new MemberDetails();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         private void metroTile2_Click(object sender, EventArgs e)
         {
             Hide();
             BookDetails obj = new BookDetails();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         private void metroTile4_Click(object sender, EventArgs e)
         {
             Hide();
             StaffLogin obj = new StaffLogin();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         private void metroTile3_Click(object sender, EventArgs e)
         {
             Hide();
             StaffDetails_Registration obj = new StaffDetails_Registration();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         
         private void metroTile6_Click(object sender, EventArgs e)
         {
-            Hide();
-            MemberRegister obj = new MemberRegister();
-            obj.ShowDialog();
+            
         }
 
         private void metroTile7_Click(object sender, EventArgs e)
         {
             Hide();
             ForgetPassword obj = new ForgetPassword();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -71,14 +69,14 @@ namespace MetroLibrary
         {
             Hide();
             Borrowing obj = new Borrowing();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         private void metroTile7_Click_1(object sender, EventArgs e)
         {
             Hide();
             HandOver obj = new HandOver();
-            obj.ShowDialog();
+            obj.Show();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
