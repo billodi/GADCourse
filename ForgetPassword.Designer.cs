@@ -40,6 +40,7 @@
             this.Padding = new System.Windows.Forms.Padding(15, 60, 15, 16);
             this.Text = "Forget Password";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ForgetPassword_FormClosed);
             this.Load += new System.EventHandler(this.ForgetPassword_Load);
             this.ResumeLayout(false);

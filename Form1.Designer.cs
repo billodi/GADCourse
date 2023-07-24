@@ -28,14 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroTile7 = new MetroFramework.Controls.MetroTile();
             this.metroTile5 = new MetroFramework.Controls.MetroTile();
             this.metroTile4 = new MetroFramework.Controls.MetroTile();
             this.metroTile3 = new MetroFramework.Controls.MetroTile();
             this.metroTile2 = new MetroFramework.Controls.MetroTile();
             this.metroTile1 = new MetroFramework.Controls.MetroTile();
-            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.Location = new System.Drawing.Point(234, 37);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(463, 23);
+            this.metroLabel1.TabIndex = 8;
+            this.metroLabel1.Text = "metroLabel1";
+            this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroTile7
             // 
@@ -150,16 +160,6 @@
             this.metroTile1.UseTileImage = true;
             this.metroTile1.Click += new System.EventHandler(this.metroTile1_Click);
             // 
-            // metroLabel1
-            // 
-            this.metroLabel1.Location = new System.Drawing.Point(234, 37);
-            this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(463, 23);
-            this.metroLabel1.TabIndex = 8;
-            this.metroLabel1.Text = "metroLabel1";
-            this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -178,6 +178,7 @@
             this.Padding = new System.Windows.Forms.Padding(15, 60, 15, 16);
             this.Text = "Dashboard";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

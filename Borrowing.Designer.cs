@@ -274,6 +274,7 @@
             this.Padding = new System.Windows.Forms.Padding(15, 60, 15, 16);
             this.Text = "Borrowing";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Borrowing_FormClosed);
             this.Load += new System.EventHandler(this.Borrowing_Load);
             this.ResumeLayout(false);
